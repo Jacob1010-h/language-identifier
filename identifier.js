@@ -1,4 +1,5 @@
 import { calculateChiSquare } from "./functions/chi-square.js";
+import * as functions from './functions/functions.js';
 
 import * as fs from 'fs';
 
@@ -6,7 +7,7 @@ const file = './letter-frequency.json';
 
 var json = JSON.parse( fs.readFileSync(file, 'utf8') );
 
-// console.log(json);
+console.log(json);
 
 // get the csv file
 
