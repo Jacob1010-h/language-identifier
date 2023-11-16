@@ -6,8 +6,6 @@ const file = './letter-frequency.json';
 
 var json = JSON.parse( fs.readFileSync(file, 'utf8') );
 
-getLetterMapByLanguage(json, "English");
-
 // console.log(json);
 
 // get the csv file
