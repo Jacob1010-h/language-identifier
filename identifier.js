@@ -1,5 +1,4 @@
 import { calculateChiSquare } from "./functions/chi-square.js";
-import { getLetterAveragesByString, getLetterMapByLanguage } from "./functions/functions.js";
 
 import * as fs from 'fs';
 
