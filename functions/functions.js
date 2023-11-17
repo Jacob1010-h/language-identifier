@@ -1,11 +1,35 @@
+export function removeWhitespaceAndCaps(str) {
+    let returnString = str.replace(/\s/g, '');
+    returnString = returnString.toLowerCase();
+    return returnString;
+}
+
+/*
+    the obj parameter is an object with keys and values
+    with each value being another object with keys and values
+
+    this function will sort the values of the inner objects
+*/
+export function sortAllObjectsByValue(arr) {
+    let hashMap = Object.values(Object.entries(arr));
+    
+    arr.sort((a, b) => {
+        return Object.values(hashMap[a]) - Object.values(hashMap[b]);
+    });
+
+    return arr;
+}
+
+
 /**
  * Will get the count of each letter in a string and return an object with the count of each letter
  * 
- * @param {String} string 
+ * @param {String} str 
  * @returns {Object} the count of each letter in the string
  */
-export function getLetterCount(string) {
-    const letters = string.split('');
+export function getLettersCount(str) {
+    const newString = removeWhitespaceAndCaps(str);
+    const letters = newString.split('');
     const letterCount = {};
     letters.forEach(letter => {
         if (letterCount[letter]) {
@@ -18,45 +42,48 @@ export function getLetterCount(string) {
 }
 
 /**
- * Gets the letter average of a character in a string, which will call @see getLetterCount()
+ * Gets the letter average of a character in a string, which will call @see getLettersCount()
  * 
- * @param {String} string 
+ * @param {String} str 
  * @param {char} letter 
  * @returns {double} the average of the letter in the string
  */
-export function getLetterAverage(string, letter) {
-    const letterCount = getLetterCount(string);
+export function getLetterAverage(str, letter) {
+    const newString = removeWhitespaceAndCaps(str);
+    const letterCount = getLettersCount(newString);
     const letterTotal = letterCount[letter];
-    return letterTotal / string.length;
+    return letterTotal / newString.length;
 }
 
 /**
- * Gets the letter average of a character in a string, given the function @see getLetterCount()
+ * Gets the letter average of a character in a string, given the function @see getLettersCount()
  * 
- * @param {String} string 
+ * @param {String} str 
  * @param {char} letter 
  * @param {getLetterCount()} letterCount
  * @returns {double} the average of the letter in the string
  */
-export function _getLetterAverage(string, letter, letterCount) {
+export function _getLetterAverage(str, letter, letterCount) {
+    const newString = removeWhitespaceAndCaps(str);
     const letterTotal = letterCount[letter];
-    return letterTotal / string.length;
+    return letterTotal / newString.length;
 }
 
 /**
  * Will get the letter average of each letter in a string, which will call @see getLetterAverage()
  * 
- * //TODO: stop o^2 complexity by not looping through the string twice @see getLetterCount()
+ * //TODO: stop o^2 complexity by not looping through the string twice @see getLettersCount()
  * 
- * @param {String} string 
+ * @param {String} str 
  * @returns {Object} the average of each letter in the string
  */
-export function getAllLetterAverage(string) {
-    const letterCount = getLetterCount(string);
-    const letterAverage = {};
+export function getAllLetterAverage(str) {
+    const newString = removeWhitespaceAndCaps(str);
+    var letterCount = Object.keys(getLettersCount(newString));
+    let letterAverage = {};
 
     letterCount.forEach(letter => {
-        letterAverage[letter] = getLetterAverage(string, letter, letterCount);        
+        letterAverage[letter] = getLetterAverage(newString, letter, letterCount);        
     });
 
     return letterAverage;
