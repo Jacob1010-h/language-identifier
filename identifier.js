@@ -7,7 +7,15 @@ const file = './letter-frequency.json';
 
 var json = JSON.parse( fs.readFileSync(file, 'utf8') );
 
-console.log(json);
+const values = functions.sortAllObjectsByValue(json);
+
+//write the values to a file
+fs.writeFileSync('./sorted-letter-frequency.json', JSON.stringify(values));
+
+// const e = functions.getAllLetterAverage("The Brown Fox Jumps Over The Lazy Dog".toLowerCase().replace(/[^a-z]/g, ''));
+// console.log(e);
+
+// console.log(json);
 
 // get the csv file
 
