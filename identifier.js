@@ -1,19 +1,73 @@
 import { calculateChiSquare } from "./functions/chi-square.js";
-import * as functions from './functions/functions.js';
 
 import * as fs from 'fs';
 
-const file = './letter-frequency.json';
+const getFile = (path) => {
+    return fs.readFileSync(path, 'utf8');
+}
+const writeFile = (path, data) => {
+    fs.writeFileSync(path, JSON.stringify(data));
+}
+const removeWhitespaceAndCaps = (str) => {
+    return str.toLowerCase().replace(/[^a-z]/g, '');
+}
+const getLettersCount = (str) => {
+    const newString = removeWhitespaceAndCaps(str);
+    const letters = newString.split('');
+    const letterCount = {};
+    letters.forEach(letter => {
+        if (letterCount[letter]) {
+            letterCount[letter]++;
+        } else {
+            letterCount[letter] = 1;
+        }
+    });
+    return letterCount;
+}
+const getLetterAverage = (str, letter) => {
+    const newString = removeWhitespaceAndCaps(str);
+    const letterCount = getLettersCount(newString);
+    const letterTotal = letterCount[letter];
+    return letterTotal / newString.length;
+}
+const getAllLetterAverage = (str) => {
+    const newString = removeWhitespaceAndCaps(str);
+    var letterCount = Object.keys(getLettersCount(newString));
+    let letterAverage = {};
 
-var json = JSON.parse( fs.readFileSync(file, 'utf8') );
+    letterCount.forEach(letter => {
+        letterAverage[letter] = getLetterAverage(newString, letter, letterCount);        
+    });
 
-const values = functions.sortAllObjectsByValue(json);
+    return letterAverage;
+}
 
-//write the values to a file
-fs.writeFileSync('./sorted-letter-frequency.json', JSON.stringify(values));
+var json = JSON.parse( getFile('./letter-frequency.json') );
 
-// const e = functions.getAllLetterAverage("The Brown Fox Jumps Over The Lazy Dog".toLowerCase().replace(/[^a-z]/g, ''));
-// console.log(e);
+const values = json.sort((a, b) => {
+    let aValue = Object.values(a)[0];
+    let bValue = Object.values(b)[0];
+    return aValue - bValue;
+});
+
+writeFile('./sorted-letter-frequency.json', values);
+
+const text = getAllLetterAverage(removeWhitespaceAndCaps( getFile('./test.txt') ));
+
+const sorted = [];
+for (var i in text) {
+    sorted.push([
+        i, text[i]
+    ]);
+}
+
+sorted.sort(function(a, b) {
+    return b[1] - a[1];
+});
+
+console.log(values);
+console.log("\n\n\n\n\n");
+console.log(sorted);
 
 // console.log(json);
 
